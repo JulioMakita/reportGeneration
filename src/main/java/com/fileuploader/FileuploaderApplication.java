@@ -30,15 +30,10 @@ public class FileuploaderApplication {
   }
 
   @Bean
-  @Primary
   public CsvMapper csvMapper(){
     CsvMapper csvMapper = new CsvMapper();
     csvMapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
     csvMapper.configure(Feature.IGNORE_UNKNOWN, true);
-    csvMapper.setVisibility(
-        VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-    csvMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-
     return csvMapper;
   }
 
