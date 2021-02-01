@@ -15,9 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fileuploader.model.Bet;
-import com.fileuploader.model.Report;
 import com.fileuploader.parser.FileParser;
 import com.fileuploader.report.ReportGeneration;
 
@@ -49,12 +47,6 @@ public class LiabilityReportController {
     if (bets == null || bets.isEmpty()) {
       return ResponseEntity.badRequest().body("Request should not be empty");
     }
-
-    return  ResponseEntity.accepted().body(reportGeneration.generate(bets));
-  }
-
-  private String generateSelectionReport(List<Report> reports) throws JsonProcessingException {
-    CsvSchema schema = csvMapper.schemaFor(Report.class).withHeader().withoutQuoteChar();
-    return csvMapper.writer(schema).writeValueAsString(reports);
+    return ResponseEntity.accepted().body(reportGeneration.generate(bets));
   }
 }
