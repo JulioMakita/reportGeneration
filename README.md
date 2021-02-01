@@ -21,4 +21,8 @@ http://localhost:8080/upload/selection
 
 http://localhost:8080/json/selection
 
+
+The output of both requests file and json,
+will generate a CSV text format string.
+
 It can be tested using Postman.
