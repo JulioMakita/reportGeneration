@@ -49,4 +49,16 @@ public class Report {
     return totalLiability;
   }
 
+  public void calculateTotalStake(BigDecimal stake) {
+    this.totalStakes = this.totalStakes.add(stake).setScale(2, RoundingMode.CEILING);
+  }
+
+  public void calculateTotalLiability(BigDecimal stake, BigDecimal price) {
+    this.totalLiability =
+        this.totalLiability.add(stake.multiply(price)).setScale(2, RoundingMode.CEILING);
+  }
+
+  public void incrementNumberOfBets() {
+    this.numberOfBets++;
+  }
 }

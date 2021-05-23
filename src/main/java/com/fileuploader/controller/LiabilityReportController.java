@@ -2,8 +2,6 @@ package com.fileuploader.controller;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +14,26 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fileuploader.model.Bet;
+import com.fileuploader.model.ReportType;
 import com.fileuploader.parser.FileParser;
 import com.fileuploader.report.ReportGeneration;
 
 @RestController
 public class LiabilityReportController {
 
-  @Autowired
   private FileParser fileParser;
 
-  @Autowired
   private CsvMapper csvMapper;
 
-  @Resource(name = "liability")
   private ReportGeneration reportGeneration;
+
+  @Autowired
+  public LiabilityReportController(FileParser fileParser, CsvMapper csvMapper,
+      ReportGeneration reportGeneration) {
+    this.fileParser = fileParser;
+    this.csvMapper = csvMapper;
+    this.reportGeneration = reportGeneration;
+  }
 
   @PostMapping(value = "/upload/liability", headers = "content-type=multipart/*")
   public ResponseEntity selectionReport(@RequestPart("file") MultipartFile file)
@@ -39,7 +43,7 @@ public class LiabilityReportController {
     if (bets == null || bets.isEmpty()) {
       return ResponseEntity.badRequest().body("File content should not be empty");
     }
-    return ResponseEntity.accepted().body(reportGeneration.generate(bets));
+    return ResponseEntity.accepted().body(reportGeneration.generate(bets, ReportType.LIABILITY));
   }
 
   @PostMapping(value = "/json/liability", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -47,6 +51,6 @@ public class LiabilityReportController {
     if (bets == null || bets.isEmpty()) {
       return ResponseEntity.badRequest().body("Request should not be empty");
     }
-    return ResponseEntity.accepted().body(reportGeneration.generate(bets));
+    return ResponseEntity.accepted().body(reportGeneration.generate(bets, ReportType.LIABILITY));
   }
 }
